@@ -12,9 +12,9 @@ class Particle {
         this.y += this.speed.vy;
     }
 
-    draw() {
+    draw(traslatedCoordinate) {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 2, 0, 2*Math.PI);
         ctx.fillStyle = "blue";
         ctx.fill();
     }
