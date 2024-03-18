@@ -8,10 +8,14 @@ class Particle {
     }
 
     update() {
-
+        this.x += this.speed.vx;
+        this.y += this.speed.vy;
     }
 
     draw() {
-
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, 2*Math.PI);
+        ctx.fillStyle = "blue";
+        ctx.fill();
     }
 }
