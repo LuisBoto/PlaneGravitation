@@ -1,0 +1,12 @@
+@import "./canvasBackground.css";
+
+* { padding: 0; margin: 0; }
+canvas {
+    background: #fff;
+    display: block;
+    margin: 0 auto;
+}
+
+body {
+    background: #ffffff;
+}
