@@ -10,16 +10,22 @@ class BlackHole {
     }
 
     traslateCoordinate(executionStart, coordinate) {
-        let deltaTime = (Date.now() - executionStart) / 100;
-        let deformation = (distance) => (distance != 0 ? (this.mass*distance)/(distance**2) : 0) * deltaTime;
+        let deltaTime = (Date.now() - executionStart) / 50;
+        let deformation = (distance) => {
+            if (distance <= 0) return 0;
+            let actualDeformation = (this.mass*distance)/(distance**2) * deltaTime;
+            return actualDeformation > distance ? distance : actualDeformation;
+        };
 
-        let distanceX = this.x - coordinate.x;
-        let deformationX = deformation(distanceX);
-        let newX = coordinate.x + (Math.abs(deformationX) > Math.abs(distanceX) ? distanceX : deformationX); 
-
+        let distanceX = this.x - coordinate.x;        
         let distanceY = this.y - coordinate.y;
-        let deformationY = deformation(distanceY);
-        let newY = coordinate.y + (Math.abs(deformationY) > Math.abs(distanceY) ? distanceY : deformationY);
+        let totalDistance = Math.sqrt(distanceX**2 + distanceY**2);
+        let totalDeformation = deformation(totalDistance);
+
+        let t = totalDeformation/totalDistance;
+        let newX = (1-t)*coordinate.x + t*this.x;
+        let newY = (1-t)*coordinate.y + t*this.y;
+
         return { x: newX, y: newY };
     }
 
