@@ -10,7 +10,7 @@ class BlackHole {
     }
 
     traslateCoordinate(executionStart, coordinate) {
-        let deltaTime = (Date.now() - executionStart) / 25;
+        let deltaTime = (Date.now() - executionStart) / 10000;
         let deformation = (distance) => {
             if (distance <= 0) return 0;
             let actualDeformation = (this.mass*distance)/(distance**2) * deltaTime;

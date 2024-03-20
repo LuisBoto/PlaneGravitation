@@ -7,7 +7,7 @@ class MainLayer {
     initiate() {
         this.particles = [
             //new Particle(100, 750, { vx: 2, vy: 0}),
-            new Particle(100, 650, { vx: 2, vy: 0.5}),
+            new Particle(100, 650, { vx: 2, vy: 25 }),
             //new Particle(100, 550, { vx: 2, vy: 0}),
             //new Particle(100, 450, { vx: 2, vy: 0}),
             //new Particle(100, 350, { vx: 2, vy: 0}),
