@@ -6,18 +6,17 @@ class MainLayer {
 
     initiate() {
         this.particles = [
-            //new Particle(100, 750, { vx: 2, vy: 0}),
+            new Particle(1100, 450, { vx: 0, vy: 2 }),
             new Particle(100, 650, { vx: 2, vy: 25 }),
-            //new Particle(100, 550, { vx: 2, vy: 0}),
-            //new Particle(100, 450, { vx: 2, vy: 0}),
-            //new Particle(100, 350, { vx: 2, vy: 0}),
+            new Particle(1300, 100, { vx: 1, vy: -20 }),
         ];
-        this.blackHole = new BlackHole(canvas.width/2, canvas.height/3);
+        this.blackHole = new BlackHole(canvas.width/2, canvas.height/3, {vx:0, vy:0});
         this.executionStart = Date.now();
     }
 
     update() {
         this.particles.forEach(p => p.update());
+        this.blackHole.update();
     }
 
     draw() {

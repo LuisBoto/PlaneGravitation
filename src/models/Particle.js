@@ -5,7 +5,7 @@ class Particle {
         this.y = y;
         this.speed = speed;
         this.orientation = 0;
-        this.lastDeformedCoordinate = { x: this.x, y: this.y };
+        this.color = Utils.getRandomColor();
     }
 
     update() {
@@ -16,8 +16,6 @@ class Particle {
     updateSpeedVectors(traslatedCoordinate) {
         let newAngle = Utils.calculateLineAngle({ x: this.x, y: this.y }, traslatedCoordinate);
         let rotationAngle = newAngle - this.orientation;
-        
-        //console.log("new angle: " + newAngle + " orientation: " + this.orientation);
 
         let horizontalVX = this.speed.vx * Math.cos(rotationAngle*(Math.PI/180));
         let verticalVX = this.speed.vx * Math.sin(rotationAngle*(Math.PI/180));
@@ -26,19 +24,19 @@ class Particle {
 
         this.speed.vx = horizontalVX + horizontalVY;
         this.speed.vy = verticalVX + verticalVY;
-        //this.speed.vx = Math.trunc(this.speed.vx*1000)/1000;
-        //this.speed.vy = Math.trunc(this.speed.vy*1000)/1000;
-        console.log(this.speed.vx + ' y ' + this.speed.vy );
         this.orientation += rotationAngle;
     }
 
     draw(traslatedCoordinate) {
-        this.updateSpeedVectors(traslatedCoordinate);
-        this.lastDeformedCoordinate = traslatedCoordinate;
+        this.updateSpeedVectors(traslatedCoordinate); 
+        ctx.beginPath();
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 5, 0, 2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
         ctx.beginPath();
         ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 3, 0, 2*Math.PI);
-        ctx.fillStyle = "blue";
-        ctx.fill();
+        ctx.fillStyle = this.color;
+        ctx.fill();    
 
         /*ctx.fillStyle = "black";
         ctx.textAlign = "left";

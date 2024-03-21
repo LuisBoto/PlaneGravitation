@@ -1,12 +1,15 @@
 class BlackHole {
 
-    constructor(x, y) {
+    constructor(x, y, speed) {
         this.x = x;
         this.y = y;
+        this.speed = speed;
         this.mass = 500;
     }
 
-    update() {
+    update() {        
+        this.x += this.speed.vx;
+        this.y += this.speed.vy;
     }
 
     traslateCoordinate(executionStart, coordinate) {
@@ -31,7 +34,7 @@ class BlackHole {
 
     draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 20, 0, 2*Math.PI);
+        ctx.arc(this.x, this.y, 15, 0, 2*Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
     }
