@@ -27,7 +27,28 @@ class Particle {
         this.orientation += rotationAngle;
     }
 
-    draw(traslatedCoordinate) {
+    normalizeTraslatedCoordinates(coordinates) {
+        let maxDeformationRatio = Math.max(...(coordinates.map(c => c.ratio)));
+        if(coordinates.length == 1 || maxDeformationRatio <= 0)
+            return coordinates[0].coordinate;
+        console.log(coordinates[0].ratio + " " + coordinates[1].ratio);
+        coordinates = coordinates.map(c => {
+            c.ratio = c.ratio/maxDeformationRatio;
+            return c;
+        });
+        let totalWeights = coordinates.map(c => c.ratio).reduce((total, weight) => total + weight, 0);
+        //console.log(coordinates[0].ratio + " " + coordinates[1].ratio);
+        let xVariation = coordinates.map(c => c.coordinate.x*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
+        let yVariation = coordinates.map(c => c.coordinate.y*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
+        let finalCoordinate = { x: xVariation, y: yVariation };
+        if (xVariation < coordinates[1].coordinate.x)
+            console.log(xVariation);
+        return finalCoordinate;
+    }
+
+    draw(traslatedCoordinates) {
+        let traslatedCoordinate = this.normalizeTraslatedCoordinates(traslatedCoordinates);
+
         this.updateSpeedVectors(traslatedCoordinate); 
         ctx.beginPath();
         ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 5, 0, 2*Math.PI);
