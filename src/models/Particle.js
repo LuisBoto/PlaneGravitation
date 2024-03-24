@@ -5,6 +5,7 @@ class Particle {
         this.y = y;
         this.speed = speed;
         this.orientation = 0;
+        this.lastTraslatedCoordinate = { x: x, y: y };
         this.color = Utils.getRandomColor();
     }
 
@@ -28,26 +29,43 @@ class Particle {
     }
 
     normalizeTraslatedCoordinates(coordinates) {
+
+        coordinates.forEach(c => {
+            ctx.beginPath();
+            ctx.arc(c.trueCoordinate.x, c.trueCoordinate.y, 5, 0, 2*Math.PI);
+            ctx.fillStyle = "black";
+            ctx.fill();
+        });
+
         let maxDeformationRatio = Math.max(...(coordinates.map(c => c.ratio)));
-        if(coordinates.length == 1 || maxDeformationRatio <= 0)
-            return coordinates[0].coordinate;
-        console.log(coordinates[0].ratio + " " + coordinates[1].ratio);
+        console.log(maxDeformationRatio);
+        if(coordinates.length == 1 || maxDeformationRatio == 0 || !isFinite(maxDeformationRatio))
+            return coordinates.filter(c => c.ratio == maxDeformationRatio)[0].trueCoordinate;
+
         coordinates = coordinates.map(c => {
-            c.ratio = c.ratio/maxDeformationRatio;
+            c.ratio = (c.ratio/maxDeformationRatio);
             return c;
         });
+        console.log(coordinates.map(c => c.ratio));
+
+
         let totalWeights = coordinates.map(c => c.ratio).reduce((total, weight) => total + weight, 0);
-        //console.log(coordinates[0].ratio + " " + coordinates[1].ratio);
-        let xVariation = coordinates.map(c => c.coordinate.x*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
-        let yVariation = coordinates.map(c => c.coordinate.y*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
-        let finalCoordinate = { x: xVariation, y: yVariation };
-        if (xVariation < coordinates[1].coordinate.x)
-            console.log(xVariation);
-        return finalCoordinate;
+        let xVariation = coordinates.map(c => c.trueCoordinate.x*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
+        let yVariation = coordinates.map(c => c.trueCoordinate.y*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
+        //console.log("x: " + xVariation + " max: " + maxTrueX + " min: " + minTrueX + "\n y: " + yVariation + " max: " + maxTrueY + " min: " + minTrueY)
+        return { 
+            x: xVariation, 
+            y: yVariation 
+        };
     }
 
     draw(traslatedCoordinates) {
         let traslatedCoordinate = this.normalizeTraslatedCoordinates(traslatedCoordinates);
+        if (traslatedCoordinate == null) {
+            console.log("traslation skip");
+            return;
+        }
+        this.lastTraslatedCoordinate = traslatedCoordinate;
 
         this.updateSpeedVectors(traslatedCoordinate); 
         ctx.beginPath();
