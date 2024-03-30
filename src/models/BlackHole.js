@@ -12,30 +12,34 @@ class BlackHole {
         this.y += this.speed.vy;
     }
 
-    traslateCoordinate(executionStart, coordinate) {
-        let deltaTime = ((Date.now() - executionStart) / 1000)**2;
+    traslateCoordinate(executionStart, particle) {
+        let deltaTime = ((Date.now() - executionStart) / 10000 + 1)**2;
         let deformation = (distance) => {
             if (distance <= 0) return 0;
             let actualDeformation = (this.mass*distance)/(distance**2) * deltaTime;
             return actualDeformation;
         };
 
-        let distanceX = this.x - coordinate.x;        
-        let distanceY = this.y - coordinate.y;
+        let distanceX = this.x - particle.x;        
+        let distanceY = this.y - particle.y;
         let totalDistance = Math.sqrt(distanceX**2 + distanceY**2);
 
         let totalDeformation = deformation(totalDistance);
         let ratio = totalDeformation/totalDistance;
-        let deformedX = (1-ratio)*coordinate.x + ratio*this.x;
-        let deformedY = (1-ratio)*coordinate.y + ratio*this.y;
+        let deformedX = (1-ratio)*particle.x + ratio*this.x;
+        let deformedY = (1-ratio)*particle.y + ratio*this.y;
 
         let trueDeformation = Math.min(totalDistance, totalDeformation);
         let trueRatio = trueDeformation/totalDistance;
-        let trueX = (1-trueRatio)*coordinate.x + trueRatio*this.x;
-        let trueY = (1-trueRatio)*coordinate.y + trueRatio*this.y;
+        let trueX = (1-trueRatio)*particle.x + trueRatio*this.x;
+        let trueY = (1-trueRatio)*particle.y + trueRatio*this.y;
+
+        let distanceToSingularity = Math.sqrt((particle.lastTraslatedCoordinate.x-this.x)**2 + (particle.lastTraslatedCoordinate.y+this.y)**2);
+        //console.log(distanceToSingularity);
+        //console.log(totalDeformation**3);
 
         return {  
-            ratio: (1/Math.sqrt((this.x-trueX)**2 + (this.y-trueY)**2)), 
+            ratio: 1.1**totalDeformation,//(1/distanceToSingularity)**deltaTime, // MUST INCREASE FASTER AND FASTER 
             //deformationCoordinate: { x: deformedX, y: deformedY },
             trueCoordinate: { x: trueX, y: trueY }
         };
