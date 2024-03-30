@@ -1,10 +1,10 @@
 class BlackHole {
 
-    constructor(x, y, speed) {
+    constructor(x, y, speed, mass) {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.mass = 5000;
+        this.mass = mass;
     }
 
     update() {        
@@ -47,7 +47,7 @@ class BlackHole {
 
     draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 15, 0, 2*Math.PI);
+        ctx.arc(this.x, this.y, this.mass/300, 0, 2*Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
     }

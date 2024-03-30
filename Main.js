@@ -3,20 +3,22 @@ let canvas = document.getElementById("canvas");
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-ctx.scale(0.5, 0.5);
+canvasWidth = canvas.width*4;
+canvasHeight = canvas.height*4;
+ctx.scale(0.25, 0.25);
 
 let layer;
 
 function start() {
     layer = new MainLayer();
-    //loop();
-    setInterval(loop, 50);
+    loop();
+    //setInterval(loop, 50);
 }
 
 function loop(){
     layer.update();
     layer.draw();
-    //requestAnimationFrame(() => loop());
+    requestAnimationFrame(() => loop());
 }
 
 
