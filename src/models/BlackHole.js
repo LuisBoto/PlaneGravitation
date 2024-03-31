@@ -25,22 +25,14 @@ class BlackHole {
         let totalDistance = Math.sqrt(distanceX**2 + distanceY**2);
 
         let totalDeformation = deformation(totalDistance);
-        let ratio = totalDeformation/totalDistance;
-        let deformedX = (1-ratio)*particle.x + ratio*this.x;
-        let deformedY = (1-ratio)*particle.y + ratio*this.y;
 
         let trueDeformation = Math.min(totalDistance, totalDeformation);
-        let trueRatio = trueDeformation/totalDistance;
-        let trueX = (1-trueRatio)*particle.x + trueRatio*this.x;
-        let trueY = (1-trueRatio)*particle.y + trueRatio*this.y;
-
-        let distanceToSingularity = Math.sqrt((particle.lastTraslatedCoordinate.x-this.x)**2 + (particle.lastTraslatedCoordinate.y+this.y)**2);
-        //console.log(distanceToSingularity);
-        //console.log(totalDeformation**3);
+        let ratio = trueDeformation/totalDistance;
+        let trueX = (1-ratio)*particle.x + ratio*this.x;
+        let trueY = (1-ratio)*particle.y + ratio*this.y;
 
         return {  
-            ratio: 1.1**totalDeformation,//(1/distanceToSingularity)**deltaTime, // MUST INCREASE FASTER AND FASTER 
-            //deformationCoordinate: { x: deformedX, y: deformedY },
+            ratio: 1.1**totalDeformation,
             trueCoordinate: { x: trueX, y: trueY }
         };
     }

@@ -1,16 +1,42 @@
-class Particle {
+class CelestialBody {
 
-    constructor(x, y, speed) {
+    constructor(x, y, speed, mass) {
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.orientation = 0;
         this.color = Utils.getRandomColor();
+        this.mass = mass;
     }
 
     update() {
         this.x += this.speed.vx;
         this.y += this.speed.vy;
+    }
+
+    traslateCoordinate(executionStart, affectedBody) {
+        let deltaTime = ((Date.now() - executionStart) / 10000)**2;
+        let deformation = (distance) => {
+            if (distance <= 0) return 0;
+            let actualDeformation = (this.mass*distance)/(distance**2) * deltaTime;
+            return actualDeformation;
+        };
+
+        let distanceX = this.x - affectedBody.x;        
+        let distanceY = this.y - affectedBody.y;
+        let totalDistance = Math.sqrt(distanceX**2 + distanceY**2);
+
+        let totalDeformation = deformation(totalDistance);
+
+        let trueDeformation = Math.min(totalDistance, totalDeformation);
+        let ratio = trueDeformation/totalDistance;
+        let trueX = (1-ratio)*affectedBody.x + ratio*this.x;
+        let trueY = (1-ratio)*affectedBody.y + ratio*this.y;
+
+        return {  
+            ratio: 1.1**totalDeformation,
+            trueCoordinate: { x: trueX, y: trueY }
+        };
     }
 
     updateSpeedVectors(traslatedCoordinate) {
@@ -29,9 +55,11 @@ class Particle {
 
     normalizeTraslatedCoordinates(coordinates) {
         let maxDeformationRatio = Math.max(...(coordinates.map(c => c.ratio)));
-        if(coordinates.length == 1 || maxDeformationRatio == 0 || !isFinite(maxDeformationRatio)) {
+        if (coordinates.length == 1)
+            return coordinates[0].trueCoordinate;
+        if(maxDeformationRatio == 0 || !isFinite(maxDeformationRatio)) 
             return coordinates.filter(c => c.ratio == maxDeformationRatio || !isFinite(c.ratio))[0].trueCoordinate;
-        }
+        
 
         let totalWeights = coordinates.map(c => c.ratio).reduce((total, weight) => total + weight, 0);
         let xVariation = coordinates.map(c => c.trueCoordinate.x*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
@@ -51,11 +79,11 @@ class Particle {
     
         this.updateSpeedVectors(traslatedCoordinate); 
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 5, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 15, 0, 2*Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 3, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 14, 0, 2*Math.PI);
         ctx.fillStyle = this.color;
         ctx.fill();    
 
