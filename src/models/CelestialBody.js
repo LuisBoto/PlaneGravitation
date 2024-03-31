@@ -82,11 +82,11 @@ class CelestialBody {
         this.drawTrace();
 
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 15, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, this.mass*0.0001+16, 0, 2*Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 14, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, this.mass*0.0001+14, 0, 2*Math.PI);
         ctx.fillStyle = this.color;
         ctx.fill();    
 
