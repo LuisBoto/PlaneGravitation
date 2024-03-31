@@ -7,6 +7,8 @@ class CelestialBody {
         this.orientation = 0;
         this.color = Utils.getRandomColor();
         this.mass = mass;
+
+        this.traceCache = [];
     }
 
     update() {
@@ -73,11 +75,12 @@ class CelestialBody {
     draw(traslatedCoordinates) {
         let traslatedCoordinate = this.normalizeTraslatedCoordinates(traslatedCoordinates);
         if (traslatedCoordinate == null) {
-            console.log("traslation skip");
-            return;
-        }
-    
+            return console.log("traslation skip");
+        }    
         this.updateSpeedVectors(traslatedCoordinate); 
+        this.traceCache.push(traslatedCoordinate);
+        this.drawTrace();
+
         ctx.beginPath();
         ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, 15, 0, 2*Math.PI);
         ctx.fillStyle = "black";
@@ -92,5 +95,16 @@ class CelestialBody {
         //ctx.fillText('Degress: ' + this.orientation, traslatedCoordinate.x, traslatedCoordinate.y+20);
        // ctx.fillText('VX: ' + this.x, traslatedCoordinate.x + 20, traslatedCoordinate.y);        
         //ctx.fillText('VY: ' + this.y, traslatedCoordinate.x, traslatedCoordinate.y-20);
+    }
+
+    drawTrace() {
+        if (this.traceCache.length < 5) 
+            return;
+        for (let i = this.traceCache.length-1; i > this.traceCache.length-5; i--) {
+            ctx.beginPath();
+            ctx.arc(this.traceCache[i].x, this.traceCache[i].y, 14, 0, 2*Math.PI);
+            ctx.fillStyle = this.color;
+            ctx.fill();    
+        }
     }
 }
