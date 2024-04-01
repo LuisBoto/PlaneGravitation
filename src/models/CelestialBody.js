@@ -82,11 +82,11 @@ class CelestialBody {
         this.drawTrace();
 
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, this.mass*0.0001+16, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, Math.sqrt(this.mass)*1.1+80, 0, 2*Math.PI);
         ctx.fillStyle = "black";
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, this.mass*0.0001+14, 0, 2*Math.PI);
+        ctx.arc(traslatedCoordinate.x, traslatedCoordinate.y, Math.sqrt(this.mass)*1.1+65, 0, 2*Math.PI);
         ctx.fillStyle = this.color;
         ctx.fill();    
 
@@ -98,13 +98,15 @@ class CelestialBody {
     }
 
     drawTrace() {
-        if (this.traceCache.length < 5) 
+        let traceLenght = 10;
+        if (this.traceCache.length < traceLenght) 
             return;
-        for (let i = this.traceCache.length-1; i > this.traceCache.length-5; i--) {
+        for (let i = this.traceCache.length-1; i > this.traceCache.length-traceLenght; i--) {
             ctx.beginPath();
-            ctx.arc(this.traceCache[i].x, this.traceCache[i].y, 14, 0, 2*Math.PI);
+            ctx.arc(this.traceCache[i].x, this.traceCache[i].y, 100, 0, 2*Math.PI);
             ctx.fillStyle = this.color;
             ctx.fill();    
         }
+        this.traceCache.splice(0, 1);
     }
 }
