@@ -11,4 +11,8 @@ class Utils {
         return 'rgb(' + R + ', ' + G + ',' + B + ')';
     }
 
+    static getRadiusForBody(celestialBody) {
+        return Math.sqrt(celestialBody.mass)*1.1+80;
+    }
+
 }
