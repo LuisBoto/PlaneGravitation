@@ -6,12 +6,12 @@ class MainLayer {
 
     initiate() {
         this.bodies = [
-            new CelestialBody(canvasWidth*0.2, canvasHeight*0.5, { vx: 0, vy: 0 }, 500000),
-            new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 50, vy: 50 }, 200000),
+            new CelestialBody(canvasWidth*0.5, canvasHeight*0.5, { vx: 0, vy: 0 }, 50000),
+            //new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 50, vy: 50 }, 200000),
             //new CelestialBody(canvasWidth*0.85, canvasHeight*0.5, { vx: 50, vy: 50 }, 200000),
         ];
-        for (let i=0; i<100; i++) {
-            this.bodies.push(new CelestialBody(canvasWidth*Math.random()/4, canvasHeight*Math.random()/4, { 
+        for (let i=0; i<400; i++) {
+            this.bodies.push(new CelestialBody(canvasWidth*0.3 + canvasWidth*Math.random()*0.4, canvasHeight*0.3 + canvasHeight*Math.random()*0.4, { 
                 vx: 400*Math.random()*(Math.random() > 0.5 ? -1 : 1), 
                 vy: 400*Math.random()*(Math.random() > 0.5 ? -1 : 1) 
             }, 3000*Math.random()+100));
@@ -49,23 +49,26 @@ class MainLayer {
                 let secondBodyRadius = Utils.getRadiusForBody(secondBody);
                 let secondBodyVisualPosition = secondBody.traceCache[secondBody.traceCache.length-1];
                 let distance = Math.sqrt((firstBodyVisualPosition.x - secondBodyVisualPosition.x)**2 + (firstBodyVisualPosition.y - secondBodyVisualPosition.y)**2);
-                console.log(distance + " " + firstBodyRadius + " " + secondBodyRadius);
                 if (distance < firstBodyRadius || distance < secondBodyRadius) {
                     let biggerBody = body.mass > secondBody.mass ? body : secondBody;
                     this.bodies.splice(this.bodies.indexOf(body), 1);
                     this.bodies.splice(this.bodies.indexOf(secondBody), 1);
 
+                    let totalMass = body.mass + secondBody.mass;
                     let fusedBody = new CelestialBody(
-                        biggerBody.x, biggerBody.y,
+
+                        (body.x*body.mass+secondBody.x*secondBody.mass)/totalMass, (body.y*body.mass+secondBody.y*secondBody.mass)/totalMass,
                         { 
-                            vx: (body.speed.vx*body.mass + secondBody.speed.vx*secondBody.mass)/(body.mass + secondBody.mass),
-                            vy: (body.speed.vy*body.mass + secondBody.speed.vy*secondBody.mass)/(body.mass + secondBody.mass)
+                            vx: (body.speed.vx*body.mass + secondBody.speed.vx*secondBody.mass)/totalMass,
+                            vy: (body.speed.vy*body.mass + secondBody.speed.vy*secondBody.mass)/totalMass
                         }, 
                         body.mass + secondBody.mass
                     );
                     fusedBody.color = biggerBody.color;
                     this.bodies.push(fusedBody);
-                    return this.fuseCollidingBodies();
+                    //return; // this.fuseCollidingBodies();
+                    i = 0;
+                    j = 0;
                 }
             }
         }

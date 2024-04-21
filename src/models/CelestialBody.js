@@ -75,7 +75,7 @@ class CelestialBody {
     draw(traslatedCoordinates) {
         let traslatedCoordinate = this.normalizeTraslatedCoordinates(traslatedCoordinates);
         if (traslatedCoordinate == null) {
-            return console.log("traslation skip");
+            return; // console.log("traslation skip");
         }    
         this.updateSpeedVectors(traslatedCoordinate); 
         this.traceCache.push(traslatedCoordinate);
