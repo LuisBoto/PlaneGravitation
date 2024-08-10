@@ -12,7 +12,7 @@ class Utils {
     }
 
     static getRadiusForBody(celestialBody) {
-        return Math.sqrt(celestialBody.mass)*1.1+80;
+        return Math.log(celestialBody.mass+1)**2.4;
     }
 
 }
