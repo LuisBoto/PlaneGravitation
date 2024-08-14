@@ -7,17 +7,19 @@ class MainLayer {
     initiate() {
         this.bodies = [
             new CelestialBody(canvasWidth*0.5, canvasHeight*0.5, { vx: 0, vy: 0 }, 50000),
-            //new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 50, vy: 50 }, 200000),
-            //new CelestialBody(canvasWidth*0.85, canvasHeight*0.5, { vx: 50, vy: 50 }, 200000),
+            new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 0, vy: 0 }, 200000),
+            new CelestialBody(canvasWidth*0.2, canvasHeight*0.5, { vx: 0, vy: 0 }, 2000000),
         ];
-        for (let i=0; i<400; i++) {
+        /*for (let i=0; i<400; i++) {
             this.addNewRandomBody();
-        }
+        }*/
         this.executionStart = Date.now();
     }
 
     update() {
         this.bodies.forEach(b => b.update());
+        
+        window.nodies = this.bodies;
     }
 
     draw() {
@@ -72,6 +74,10 @@ class MainLayer {
                     }
                 });
         });
+
+        /*if(this.bodies.length <= 20) 
+            for (let i=0; i<100; i++) 
+                this.addNewRandomBody();*/
     }
 
     addNewRandomBody() {

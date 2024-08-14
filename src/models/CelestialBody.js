@@ -35,14 +35,19 @@ class CelestialBody {
         let trueX = (1-ratio)*affectedBody.x + ratio*this.x;
         let trueY = (1-ratio)*affectedBody.y + ratio*this.y;
 
-        return {  
-            ratio: 1.1**totalDeformation,
+        const result = {  
+            ratio: 1.0001**totalDeformation,
             trueCoordinate: { x: trueX, y: trueY }
         };
+        //if (!isFinite(result.trueCoordinate.x*result.ratio) || !isFinite(result.trueCoordinate.y*result.ratio))
+        //    console.log(result, totalDeformation, ratio);
+        return result;
     }
 
     updateSpeedVectors(traslatedCoordinate) {
         let newAngle = Utils.calculateLineAngle({ x: this.x, y: this.y }, traslatedCoordinate);
+        if (newAngle < 0)
+            newAngle = 360 + newAngle;
         let rotationAngle = (newAngle - this.orientation);
 
         let horizontalVX = this.speed.vx * Math.cos(rotationAngle*(Math.PI/180));
@@ -53,6 +58,7 @@ class CelestialBody {
         this.speed.vx = horizontalVX + horizontalVY;
         this.speed.vy = verticalVX + verticalVY;
         this.orientation += rotationAngle;
+        this.orientation = this.orientation%360;
     }
 
     normalizeTraslatedCoordinates(coordinates) {
@@ -64,8 +70,10 @@ class CelestialBody {
         
 
         let totalWeights = coordinates.map(c => c.ratio).reduce((total, weight) => total + weight, 0);
-        let xVariation = coordinates.map(c => c.trueCoordinate.x*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
-        let yVariation = coordinates.map(c => c.trueCoordinate.y*c.ratio).reduce((totalDistances, distance) => totalDistances + distance, 0)/totalWeights;
+        let xVariation = coordinates.map(c => c.trueCoordinate.x*c.ratio/totalWeights).reduce((totalDistances, distance) => totalDistances + distance, 0);
+        let yVariation = coordinates.map(c => c.trueCoordinate.y*c.ratio/totalWeights).reduce((totalDistances, distance) => totalDistances + distance, 0);
+        //if (!isFinite(xVariation) || !isFinite(yVariation))
+        //    console.log(xVariation, yVariation, totalWeights, coordinates.map(c => c.trueCoordinate.x*c.ratio/totalWeights), coordinates.map(c => c.trueCoordinate.y*c.ratio/totalWeights));
         return { 
             x: xVariation, 
             y: yVariation 
