@@ -7,19 +7,17 @@ class MainLayer {
     initiate() {
         this.bodies = [
             new CelestialBody(canvasWidth*0.5, canvasHeight*0.5, { vx: 0, vy: 0 }, 50000),
-            new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 0, vy: 0 }, 200000),
-            new CelestialBody(canvasWidth*0.2, canvasHeight*0.5, { vx: 0, vy: 0 }, 2000000),
+            //new CelestialBody(canvasWidth*0.8, canvasHeight*0.5, { vx: 0, vy: 0 }, 200000),
+            //new CelestialBody(canvasWidth*0.2, canvasHeight*0.5, { vx: 0, vy: 0 }, 2000000),
         ];
-        /*for (let i=0; i<400; i++) {
+        for (let i=0; i<400; i++) {
             this.addNewRandomBody();
-        }*/
+        }
         this.executionStart = Date.now();
     }
 
     update() {
         this.bodies.forEach(b => b.update());
-        
-        window.nodies = this.bodies;
     }
 
     draw() {
@@ -36,8 +34,8 @@ class MainLayer {
     }
 
     fuseCollidingBodies() { // TODO change to O(n)
-        this.bodies.filter(body => body.x > canvasWidth*1.2 || body.x < -canvasWidth*0.2).forEach(body => this.bodies.splice(this.bodies.indexOf(body), 1));
-        this.bodies.filter(body => body.y > canvasHeight*1.2 || body.y < -canvasHeight*0.2).forEach(body => this.bodies.splice(this.bodies.indexOf(body), 1));
+        this.bodies.filter(body => body.x > canvasWidth*2 || body.x < -canvasWidth*2).forEach(body => this.bodies.splice(this.bodies.indexOf(body), 1));
+        this.bodies.filter(body => body.y > canvasHeight*2 || body.y < -canvasHeight*2).forEach(body => this.bodies.splice(this.bodies.indexOf(body), 1));
 
         this.bodies.filter(body => body.traceCache.length > 0).forEach(body => {
             this.bodies.filter(secondBody => 
@@ -74,10 +72,6 @@ class MainLayer {
                     }
                 });
         });
-
-        /*if(this.bodies.length <= 20) 
-            for (let i=0; i<100; i++) 
-                this.addNewRandomBody();*/
     }
 
     addNewRandomBody() {
