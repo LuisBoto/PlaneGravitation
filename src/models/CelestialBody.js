@@ -17,7 +17,7 @@ class CelestialBody {
     }
 
     traslateCoordinate(executionStart, affectedBody) {
-        let deltaTime = ((Date.now() - executionStart) / 10000)**2;
+        let deltaTime = ((Date.now() - executionStart) / 100)**2;
         let deformation = (distance) => {
             if (distance <= 0) return 0;
             let actualDeformation = (this.mass*distance)/(distance**2) * deltaTime;
@@ -67,7 +67,6 @@ class CelestialBody {
             return coordinates[0].trueCoordinate;
         if(maxDeformationRatio == 0 || !isFinite(maxDeformationRatio)) 
             return coordinates.filter(c => c.ratio == maxDeformationRatio || !isFinite(c.ratio))[0].trueCoordinate;
-        
 
         let totalWeights = coordinates.map(c => c.ratio).reduce((total, weight) => total + weight, 0);
         let xVariation = coordinates.map(c => c.trueCoordinate.x*c.ratio/totalWeights).reduce((totalDistances, distance) => totalDistances + distance, 0);
