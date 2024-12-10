@@ -63,6 +63,8 @@ class CelestialBody {
 
     normalizeTraslatedCoordinates(coordinates) {
         let maxDeformationRatio = Math.max(...(coordinates.map(c => c.ratio)));
+        if (coordinates.length == 0)
+            return { x: this.x, y: this.y };
         if (coordinates.length == 1)
             return coordinates[0].trueCoordinate;
         if(maxDeformationRatio == 0 || !isFinite(maxDeformationRatio)) 
