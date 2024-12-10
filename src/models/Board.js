@@ -45,11 +45,6 @@ class Cell {
             withinRightBound ? allCells[this.horizontalIndex][this.verticalIndex+1] : null,
             withinRightBound && withinLowerBound ? allCells[this.horizontalIndex+1][this.verticalIndex+1] : null,
         ];
-
-        /*const includedIndexes = [this.horizontalIndex, this.horizontalIndex+1, this.horizontalIndex-1, this.verticalIndex, this.verticalIndex-1, this.verticalIndex+1]
-        const result = allCells
-            .filter(cell => cell !== this)
-            .filter(cell => includedIndexes.includes(cell.horizontalIndex) && includedIndexes.includes(cell.verticalIndex));*/
         return result.filter(c => c != null);
     }
 
