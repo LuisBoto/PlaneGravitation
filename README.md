@@ -26,7 +26,7 @@ To better picture it, imagine a sheet of paper where two points have a gravitati
 
 As execution time passes, the compression accelerates, thus achieving the effect of objects accelerating and falling into gravitational pits. With this approach we then have our "base" plane with the real coordinate positions of objects, and our "visual" or deformed plane, which is the one we actually draw on screen and where we see objects interacting gravitationally. This way, stationary objects do not actually move, but gravity makes the space between them collapse until they collide.
 
-In code, we perform this by traslating an objects real coordinate to its deformed position before drawing it.
+In code, we perform this by translating an object's real coordinate to its deformed position before drawing it.
 
 <p align="center"><img width="25%" src=".readme/gravitationalDrift.gif" alt="Logo"/></p>
 
