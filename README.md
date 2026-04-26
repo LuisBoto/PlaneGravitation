@@ -38,6 +38,8 @@ At this stage we are still missing the rotation of the object itself. The deform
 
 Thus we should take into account the rotation produced by the apparent change in an object's position: If coordinate (-5, 5) of our base plane appears now to be in position (-3, 3) due to the deformation, we need to consider a line between these two points, and the angle between it and the X axis. We´ll use this angle to update the object's velocity on both axes (VX and VY) and generate the rotation.
 
+<p align="center"><img src=".readme/coordinateAngle.png" alt="Logo"/></p>
+
 Now we can actually see proper orbits!
 
 <p align="center"><img src=".readme/orbit.gif" alt="Logo"/></p>
