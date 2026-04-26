@@ -32,4 +32,16 @@ In code, we perform this by translating an object's real coordinate to its defor
 
 ## Creating orbits
 
+Now we have a way to create gravitational drift, but giving speed to an object in this environment is not enought to have it move around in the way we may expect, that is, orbiting a source of gravity in some form.
+
+At this stage we are still missing the rotation of the object itself. The deformation of the space where it lies not only apparently shifts its position, it also naturally shifts its direction. It's easy to think of a rocket whose trajectory is bent by the gravity of another body, at the end the rocket still follows its path head-on even if its direction has shifted (or so I think!).
+
+Thus we should take into account the rotation produced by the apparent change in an object's position: If coordinate (-5, 5) of our base plane appears now to be in position (-3, 3) due to the deformation, we need to consider a line between these two points, and the angle between it and the X axis. We´ll use this angle to update the object's velocity on both axes (VX and VY) and generate the rotation.
+
+Now we can actually see proper orbits!
+
+<p align="center"><img src=".readme/orbit.gif" alt="Logo"/></p>
+
+## Having multiple gravity sources at the same time
+
 TBD
