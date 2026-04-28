@@ -2,6 +2,8 @@
 
 The aim of this project was to create a simplistic, 2D gravitation simulation with a twist: Instead of directly applying newtonian gravitational forces, the goal was to create a somewhat more realistic system with an actual space-time deformation.
 
+<p align="center"><img src=".readme/dioGravity.jpg"/></p>
+
 **Warning:** The code is a bit CPU intensive, it should be GPU-optimised and probably the overall loop could also be made faster. Equations, scales and constants were chosen by feeling alone as I am not versed in physics 😛
 
 # Designing the approach
@@ -22,13 +24,13 @@ The idea is that the actual coordinate space is the same at all times (i.e. a st
 
 To better picture it, imagine a sheet of paper where two points have a gravitational attraction. The objects themselves do not actually move, rather the paper itself wrinkles instead to make them closer, and so a gravitational field compresses the coordinate space around it bringing it towards itself.
 
-<p align="center"><img src=".readme/planeDeformation.png" alt="Logo"/></p>
+<p align="center"><img src=".readme/planeDeformation.png"/></p>
 
 As execution time passes, the compression accelerates, thus achieving the effect of objects accelerating and falling into gravitational pits. With this approach we then have our "base" plane with the real coordinate positions of objects, and our "visual" or deformed plane, which is the one we actually draw on screen and where we see objects interacting gravitationally. This way, stationary objects do not actually move, but gravity makes the space between them collapse until they collide.
 
 In code, we perform this by translating an object's real coordinate to its deformed position before drawing it.
 
-<p align="center"><img width="25%" src=".readme/gravitationalDrift.gif" alt="Logo"/></p>
+<p align="center"><img width="25%" src=".readme/gravitationalDrift.gif"/></p>
 
 ## Creating orbits
 
@@ -38,11 +40,11 @@ At this stage we are still missing the rotation of the object itself. The deform
 
 Thus we should take into account the rotation produced by the apparent change in an object's position: If coordinate (-5, 5) of our base plane appears now to be in position (-3, 3) due to the deformation, we need to consider a line between these two points, and the angle between it and the X axis. We´ll use this angle to update the object's velocity on both axes (VX and VY) and generate the rotation.
 
-<p align="center"><img src=".readme/coordinateAngle.png" alt="Logo"/></p>
+<p align="center"><img src=".readme/coordinateAngle.png"/></p>
 
 Now we can actually see proper orbits!
 
-<p align="center"><img src=".readme/orbit.gif" alt="Logo"/></p>
+<p align="center"><img src=".readme/orbit.gif"/></p>
 
 ## Having multiple gravity sources at the same time
 
