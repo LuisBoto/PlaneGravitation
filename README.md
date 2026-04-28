@@ -1,4 +1,4 @@
-# PlaneGravitation
+# Plane Gravitation
 
 The aim of this project was to create a simplistic, 2D gravitation simulation with a twist: Instead of directly applying newtonian gravitational forces, the goal was to create a somewhat more realistic system with an actual space-time deformation.
 
@@ -63,3 +63,13 @@ What happens is, at different times, both gravity sources end up reporting a def
 I chose <b><sub>1.0001^</sub>totalDeformation</b> as the equation to calculate a ratio (or weight), to be applied to the deformed coordinate reported by a gravity source when normalizing it against others. I chose it because it would always grow but does so very slowly, seeking to guarantee that small differences in mass or distance still had an impact.
 
 With this, we can now perform a weighted average on the N deformed coordinates we receive, and we get a closer approach when trying out these specific cases, albeit still an imperfect one, because drift acceleration is not correctly maintained. But we can use this to make N bodies take into account the gravitational influence of each other.
+
+<p align="center"><img src=".readme/multipleOrbits.gif"/></p>
+
+# End notes
+
+Several things could probably be improved, there are some cases where calculations result in infinite values, some orbits are not followed in the smooth ways one might expect, the ratio used to normalize coordinates might not be a very accurate approach, and performance specially could use a boost. 
+
+Still, this project was made more as a thought experiment, and the simulation is fun to play with when changing the amount, size and position of bodies and seeing how they interact. I would have liked to add controls to dynamically change those, or even to stop and resume the execution, but one's gotta know when to stop 🐾.
+
+I hope the full explanation was somewhat understandable or at the very least enternaining to follow, and as always, feel free to build upon it!
