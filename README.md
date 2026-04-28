@@ -48,4 +48,18 @@ Now we can actually see proper orbits!
 
 ## Having multiple gravity sources at the same time
 
-TBD
+Up until now, we have points of gravity that can influence surrounding bodies. It is when we intend to make the system a bit more complete and actually have multiple bodies influence one another, that we run into another hard question.
+
+If we have N sources of gravity acting on the same coordinate, we then generate N possible deformations of the coordinate that we need to normalize into a single one. One might think this is as easy as averaging it all and calling it a day, but of course there are some problems.
+
+When a source of gravity begins compressing the plane and bringing a certain point towards itself, eventually there comes a time when that specific point is brought up to the same place as the gravity source, finally collapsing all the space between them. From that moment on, they're as close as it gets and it makes no sense to bring the coordinate closer, so the calculated deformation stops changing.
+
+This causes a situation: Imagine a setup with two gravity sources attracting a third body from equal distances, but one has a bigger mass than the other. The influenced body should slowly start falling towards the heavier source, but with this setup something different happens; it instead starts doing just that before stopping dead at an intermediate place and not really completing its fall.
+
+<p align="center"><img src=".readme/driftStop.gif"/></p>
+
+What happens is, at different times, both gravity sources end up reporting a deformation equal to swallowing the point, and by just averaging it out we end up in the middle, with no further changes. We need to take into account not just the deformed coordinate, but with how much "force" it is acting. Basically, to factor in the full deformation that would happen beyond the position of the gravity source, without capping it there.
+
+I chose <b><sub>1.0001^</sub>totalDeformation</b> as the equation to calculate a ratio (or weight), to be applied to the deformed coordinate reported by a gravity source when normalizing it against others. I chose it because it would always grow but does so very slowly, seeking to guarantee that small differences in mass or distance still had an impact.
+
+With this, we can now perform a weighted average on the N deformed coordinates we receive, and we get a closer approach when trying out these specific cases, albeit still an imperfect one, because drift acceleration is not correctly maintained. But we can use this to make N bodies take into account the gravitational influence of each other.
